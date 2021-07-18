@@ -1,0 +1,8 @@
+---
+- name: configuracion users
+  hosts: master
+  gather_facts: false
+  become: true
+  roles:
+     - users
+

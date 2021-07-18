@@ -1,0 +1,13 @@
+master_address : "51.136.13.10"
+worker01_address: "51.136.146"
+worker02_address: "51.136.13.5"
+
+
+pod_network_cidr: "192.169.0.0/16"
+
+workers_rule: 
+ - 'rule family=ipv4 source address=51.136.55.230/32 accept'
+ - 'rule family=ipv4 source address=51.136.13.5/32 accept'
+
+kube_perm_workers_rule: rule family=ipv4 source address=172.17.0.1/16 accept
+

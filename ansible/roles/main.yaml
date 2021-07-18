@@ -1,0 +1,30 @@
+---
+- name: configurando workers
+  firewalld:
+    zone: public
+    permanent: yes
+    state: enabled
+    immediate: yes
+    port: "{{ item }}"
+  loop:
+    - 10250/tcp
+    - 30000-32767/tcp
+
+- name: Reiniciar firewall
+  command: firewall-cmd --reload
+
+#- name: Resetear nodo
+#  command: kubeadm reset --force
+
+- name: Copiar join command de Ansiblehost a los workers.
+  copy:
+    src: /tmp/kubernetes_join_command
+    dest: /tmp/kubernetes_join_command
+    mode: 0777
+
+- name: Unir workers al cluster
+  command: sh /tmp/kubernetes_join_command
+  #register: joiner_or_not
+
+
+

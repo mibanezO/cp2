@@ -1,0 +1,8 @@
+---
+- name: Instalando ingress controller
+  hosts: master
+  gather_facts: false
+  become: true
+  roles:
+     - ingress-controller
+

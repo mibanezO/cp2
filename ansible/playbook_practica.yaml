@@ -1,0 +1,57 @@
+---
+- name: configuracion inicial
+  hosts: all
+  gather_facts: false
+  become: true
+  roles:
+    - config01
+
+- name: instalar servidor NFS
+  hosts: nfs
+  gather_facts: false
+  become: true
+  roles:
+    - 'nfs'
+
+- name: configuracion para kubernetes
+  hosts: all
+  gather_facts: false
+  become: true
+  roles:
+    - k8config
+
+- name: configuracion kubernetes en master
+  hosts: master
+  gather_facts: false
+  become: true
+  roles:
+    - k8master
+
+- name: configuracion sdn calico
+  hosts: master
+  gather_facts: false
+  become: true
+  roles:
+     - sdn_calico
+
+- name: configurando kubernetes en workers
+  hosts: workers
+  gather_facts: false
+  become: true
+  roles:
+    - k8workers
+
+- name: Instalando ingress controller
+  hosts: master
+  gather_facts: false
+  become: true
+  roles:
+     - ingress-controller
+
+- name: Creando usuarios
+  hosts: master
+  gather_facts: false
+  become: true
+  roles:
+     - users
+

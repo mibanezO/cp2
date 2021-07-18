@@ -1,0 +1,49 @@
+---
+
+- name: Actualizar paquetes ultimas versiones
+  command: 
+    cmd: yum update --skip-broken --nobest
+    warn: no
+  #yum:
+  #    name: '*'
+  #    state: latest
+  #    skip_broken: yes      
+  #dnf:
+  #    name: "*"
+  #    state: latest
+- name: Asignar zona horaria Europe/Madrid
+  timezone:
+    name: Europe/Madrid
+- name: Instalar Chrony
+  package:
+    name: 'chrony'
+    state: 'present'
+- name: Habilitar Chrony
+  command: /usr/bin/systemctl enable chronyd
+- name: Iniciar Chrony
+  command: /usr/bin/systemctl start chronyd
+- name: Setear ntp a true
+  command: /usr/bin/timedatectl set-ntp true
+- name: Deshabilitar SELinux
+  selinux:
+    state: disabled
+#  register: selinuxdisabled
+#- name: Print the changes in Configurtion file 
+#  command: grep SELINUX /etc/sysconfig/selinux
+#  register: sevalue
+#- debug:
+#       var: sevalue.stdout_lines
+#- name: Esperar 5 segundos y reiniciar
+#  shell: "Reiniciar luego de 5 segundos"
+#  async: 1
+#  poll: 0
+#  when: selinuxdisabled is changed
+- name: Setear SELinux in modo permisivo permisivo hasta que se reinicie la maquina
+  command: setenforce 0
+  ignore_errors: true
+  changed_when: false
+- name: instalar nfs-utils nfs4-acl-tools wget
+  dnf:
+    name: ['nfs-utils', 'nfs4-acl-tools', 'wget']
+    state: latest
+
